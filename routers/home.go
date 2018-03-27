@@ -30,6 +30,8 @@ const (
 	tplExploreOrganizations base.TplName = "explore/organizations"
 	// tplExploreCode explore code page template
 	tplExploreCode base.TplName = "explore/code"
+	// tplExploreHound code page template
+	tplExploreHound base.TplName = "explore/hound"
 )
 
 // Home render home page
@@ -351,6 +353,15 @@ func ExploreCode(ctx *context.Context) {
 	ctx.Data["RequireHighlightJS"] = true
 	ctx.Data["PageIsViewCode"] = true
 	ctx.HTML(200, tplExploreCode)
+}
+// ExplorerHound displays in an Iframe
+func ExploreHound(ctx *context.Context) {
+	ctx.Data["Title"] = ctx.Tr("explore")
+	ctx.Data["PageIsExplore"] = true
+	ctx.Data["PageIsExploreHound"] = true
+	ctx.Data["IsRepoIndexerEnabled"] = setting.Indexer.RepoIndexerEnabled
+
+	ctx.HTML(200, tplExploreHound)
 }
 
 // NotFound render 404 page

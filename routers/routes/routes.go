@@ -185,6 +185,7 @@ func RegisterRoutes(m *macaron.Macaron) {
 		m.Get("/users", routers.ExploreUsers)
 		m.Get("/organizations", routers.ExploreOrganizations)
 		m.Get("/code", routers.ExploreCode)
+		m.Get("/hound", routers.ExploreHound)
 	}, ignSignIn)
 	m.Combo("/install", routers.InstallInit).Get(routers.Install).
 		Post(bindIgnErr(auth.InstallForm{}), routers.InstallPost)
