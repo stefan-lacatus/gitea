@@ -118,6 +118,9 @@ var (
 	LetsEncryptDirectory string
 	LetsEncryptEmail     string
 
+	CORS struct {
+	     AccessControlAllowOrigin string
+        }
 	SSH = struct {
 		Disabled                 bool           `ini:"DISABLE_SSH"`
 		StartBuiltinServer       bool           `ini:"START_SSH_SERVER"`

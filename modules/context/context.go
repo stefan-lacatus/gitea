@@ -193,6 +193,14 @@ func Contexter() macaron.Handler {
 			},
 			Org: &Organization{},
 		}
+
+		if len(setting.CORS.AccessControlAllowOrigin) > 0 {
+			ctx.Header().Set("Access-Control-Allow-Origin", setting.CORS.AccessControlAllowOrigin)
+			ctx.Header().Set("Access-Control-Allow-Credentials ", "true")
+			ctx.Header().Set("Access-Control-Max-Age", "3600")
+			ctx.Header().Set("Access-Control-Allow-Headers", "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With")
+		}
+
 		c.Data["Link"] = ctx.Link
 		ctx.Data["PageStartTime"] = time.Now()
 		// Quick responses appropriate go-get meta with status 200

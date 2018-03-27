@@ -392,6 +392,9 @@ func RegisterRoutes(m *macaron.Macaron) {
 		if setting.API.EnableSwagger {
 			m.Get("/swagger", misc.Swagger)
 		}
+		// Handle preflight OPTIONS request
+		m.Options("/*", func() {})
+
 		m.Get("/version", misc.Version)
 		m.Post("/markdown", bind(api.MarkdownOption{}), misc.Markdown)
 		m.Post("/markdown/raw", misc.MarkdownRaw)
