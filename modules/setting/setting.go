@@ -1304,6 +1304,9 @@ func newService() {
 			Service.OpenIDBlacklist[i] = regexp.MustCompilePOSIX(p)
 		}
 	}
+
+	sec = Cfg.Section("cors")
+	CORS.AccessControlAllowOrigin = sec.Key("ACCESS_CONTROL_ALLOW_ORIGIN").MustString("")
 }
 
 var logLevels = map[string]string{
