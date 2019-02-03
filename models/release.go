@@ -251,6 +251,7 @@ func GetReleaseByID(id int64) (*Release, error) {
 type FindReleasesOptions struct {
 	IncludeDrafts bool
 	IncludeTags   bool
+	ExcludePrereleases bool
 	TagNames      []string
 }
 
@@ -263,6 +264,9 @@ func (opts *FindReleasesOptions) toConds(repoID int64) builder.Cond {
 	}
 	if !opts.IncludeTags {
 		cond = cond.And(builder.Eq{"is_tag": false})
+	}
+	if opts.ExcludePrereleases {
+		cond = cond.And(builder.Eq{"is_prerelease": false})
 	}
 	if len(opts.TagNames) > 0 {
 		cond = cond.And(builder.In("tag_name", opts.TagNames))

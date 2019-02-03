@@ -586,6 +586,7 @@ func RegisterRoutes(m *macaron.Macaron) {
 				m.Group("/releases", func() {
 					m.Combo("").Get(repo.ListReleases).
 						Post(reqToken(), reqRepoWriter(models.UnitTypeReleases), context.ReferencesGitRepo(), bind(api.CreateReleaseOption{}), repo.CreateRelease)
+					m.Combo("/latest").Get(repo.GetLatestRelease)
 					m.Group("/:id", func() {
 						m.Combo("").Get(repo.GetRelease).
 							Patch(reqToken(), reqRepoWriter(models.UnitTypeReleases), context.ReferencesGitRepo(), bind(api.EditReleaseOption{}), repo.EditRelease).

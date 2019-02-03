@@ -119,6 +119,49 @@ func ListReleases(ctx *context.APIContext) {
 	ctx.JSON(200, rels)
 }
 
+// GetLatestRelease gets the latest release in a repository. Draft releases and prereleases are excluded
+func GetLatestRelease(ctx *context.APIContext) {
+	// swagger:operation GET /repos/{owner}/{repo}/releases/latest repository repoGetLatestRelease
+	// ---
+	// summary: Gets the latest release in a repository. Draft releases and prereleases are excluded
+	// produces:
+	// - application/json
+	// parameters:
+	// - name: owner
+	//   in: path
+	//   description: owner of the repo
+	//   type: string
+	//   required: true
+	// - name: repo
+	//   in: path
+	//   description: name of the repo
+	//   type: string
+	//   required: true
+	// responses:
+	//   "200":
+	//     "$ref": "#/responses/Release"
+
+	// we set the pageSize to 1 to get back only one release
+	releases, err := models.GetReleasesByRepoID(ctx.Repo.Repository.ID, models.FindReleasesOptions{
+		IncludeDrafts:      false,
+		ExcludePrereleases: true,
+	}, 1, 1)
+	if err != nil {
+		ctx.Error(500, "GetReleasesByRepoID", err)
+		return
+	}
+	if len(releases) <= 0 {
+		// no releases found, just return 404
+		ctx.Status(404)
+		return
+	}
+	if err := releases[0].LoadAttributes(); err != nil {
+		ctx.Error(500, "LoadAttributes", err)
+		return
+	}
+	ctx.JSON(200, releases[0].APIFormat())
+}
+
 // CreateRelease create a release
 func CreateRelease(ctx *context.APIContext, form api.CreateReleaseOption) {
 	// swagger:operation POST /repos/{owner}/{repo}/releases repository repoCreateRelease
